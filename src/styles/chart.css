@@ -1,0 +1,97 @@
+#container {
+  display: flex;
+  gap: 1vmin;
+  padding: 0 3vmin;
+}
+
+#left-panel,
+#right-panel {
+  width: 6em;
+  margin: 2vh 0;
+  font-size: 2.5vmin;
+  z-index: 1;
+  white-space: nowrap;
+  overflow: visible;
+}
+
+#left-panel {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+#right-panel {
+  display: flex;
+  align-items: flex-end;
+  position: relative;
+}
+
+#right-panel > * {
+  position: absolute;
+  right: 0;
+}
+
+#right-panel button.settings {
+  border: none;
+  align-self: start;
+  line-height: 1;
+  padding: 0.4em 0.4em 0.3em 0.4em;
+}
+
+#right-panel button.settings svg {
+  max-width: 3em;
+  max-height: 3em;
+}
+
+#github, #copy {
+  color: var(--lighter-fg-color);
+  z-index: 1;
+}
+
+#github {
+  vertical-align: middle;
+}
+
+#github svg {
+  height: 1em;
+}
+
+#github svg:hover {
+  color: var(--primary-fg-color);
+}
+
+#chart > svg {
+  width: auto;
+  max-width: 100%;
+  height: 99vmin;
+}
+
+#parameters {
+  padding: 0;
+  list-style-type: none;
+}
+
+#parameters li {
+  line-height: 1.3;
+  position: relative;
+}
+
+#parameters li svg {
+  max-height: 1.2em;
+  width: auto;
+  vertical-align: middle;
+}
+
+#parameters [data-prop] {
+  background-repeat: no-repeat;
+  background-size: contain;
+  text-transform: capitalize;
+  vertical-align: middle;
+}
+
+#parameters [data-prop^="transit"]::before {
+  content: "T";
+  position: absolute;
+  left: 1.7em;
+  font-size: .6em;
+}
