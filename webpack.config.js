@@ -32,6 +32,11 @@ module.exports = {
     ],
   },
   mode: 'development',
+  resolve: {
+    alias: {
+        'webmidi': path.join(__dirname, 'node_modules/webmidi/dist/esm/webmidi.esm.min.js')
+    }
+  },
   optimization: {
     minimizer: [
       // For webpack@5 you can use the `...` syntax to extend existing minimizers (i.e. `terser-webpack-plugin`), uncomment the next line

@@ -1,7 +1,7 @@
 :root {
-  --primary-fg-color: #263238;
+  --primary-fg-color: #ffffff;
   --lighter-fg-color: #90A4AE;
-  --primary-bg-color: #FFFFFF;
+  --primary-bg-color: #000000;
   accent-color: var(--primary-fg-color);
 }
 

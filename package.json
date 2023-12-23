@@ -24,7 +24,8 @@
   "dependencies": {
     "@sentry/browser": "^7.12.1",
     "@sentry/tracing": "^7.12.1",
-    "circular-natal-horoscope-js": "git+https://github.com/ilyai/CircularNatalHoroscopeJS.git"
+    "circular-natal-horoscope-js": "git+https://github.com/ilyai/CircularNatalHoroscopeJS.git",
+    "webmidi": "^3.1.8"
   },
   "devDependencies": {
     "css-loader": "^6.7.1",
