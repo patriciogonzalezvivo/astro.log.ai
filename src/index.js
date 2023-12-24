@@ -21,6 +21,9 @@ WebMidi
   .then(() => console.log("WebMidi enabled!"))
   .catch(err => alert(err));
 
+let bodies = ["sun", "moon", "mercury", "venus", "mars", "jupiter", "saturn", "uranus", "neptune", "pluto"];
+let signs = ["aries", "taurus", "gemini", "cancer", "leo", "virgo", "libra", "scorpio", "sagittarius", "capricorn", "aquarius", "pisces"];
+
 function run({ origin, transit, settings }) {
     console.info("[Configuration] %o", { origin, transit, settings });
 
@@ -51,10 +54,48 @@ function run({ origin, transit, settings }) {
         } else {
             dataRadix = calculate({ ...origin, ...currentTime }, settings); 
             console.log(dataRadix);
-            if (WebMidi.outputs.length > 0) {
-                let output = WebMidi.outputs[0];
-                let channel = output.channels[1];
-                console.log("channel", channel);
+            
+            // for each output on WebMidi
+            for (let j = 0; j < WebMidi.outputs.length; j++) {
+                var output = WebMidi.outputs[j];
+                // console.log("channel", channel);
+                
+                // iterate throiugh all bodies
+                for (let i = 0; i < bodies.length; i++) {
+                    var channel = output.channels[i + 1];
+                    var body = dataRadix.horoscope.Ephemeris[bodies[i]];
+                    var alt = Math.floor(body.position.altaz.topocentric.altitude);
+                    var az = Math.floor(body.position.altaz.topocentric.azimuth);
+                    var house = dataRadix.horoscope._celestialBodies[bodies[i]].House.id;
+                    var sign = signs.indexOf(dataRadix.horoscope._celestialBodies[bodies[i]].Sign.key);
+                    console.log(body.key, alt, az, house, sign);                    
+                    
+                    // AZM 
+                    var az_channel = Math.floor(az / 128) + 1
+                    var az_remainder = az % 128;
+
+                    for (let j = 1; j < az_channel; j++) 
+                        channel.sendControlChange(j, 127);
+                    channel.sendControlChange(az_channel, az_remainder);
+                    for (let j = az_channel + 1; j < 4; j++) 
+                        channel.sendControlChange(j, 0);
+
+                    // ALT
+                    if (alt < 0) {
+                        channel.sendControlChange(4, Math.abs(alt) );
+                        channel.sendControlChange(5, 0);
+                    }
+                    else {
+                        channel.sendControlChange(4, 0);
+                        channel.sendControlChange(5, alt);
+                    }
+
+                    // HOUSE
+                    channel.sendControlChange(6, house);
+
+                    // SIGN
+                    channel.sendControlChange(7, sign);
+                }
             }
         }
         text.displayTime(dataRadix, dataTransit, settings);
