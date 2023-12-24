@@ -57,19 +57,26 @@ function run({ origin, transit, settings }) {
             console.log(dataRadix);
             
             // for each output on WebMidi
-            for (let j = 0; j < WebMidi.outputs.length; j++) {
-                var output = WebMidi.outputs[j];
+            for (let p = 0; p < WebMidi.outputs.length; p++) {
+                var output = WebMidi.outputs[p];
                 // console.log("channel", channel);
                 
                 // iterate throiugh all bodies
                 for (let i = 0; i < bodies.length; i++) {
                     var channel = output.channels[i + 1];
+                    var key = bodies[i];
                     var body = dataRadix.horoscope.Ephemeris[bodies[i]];
                     var alt = Math.floor(body.position.altaz.topocentric.altitude);
                     var az = Math.floor(body.position.altaz.topocentric.azimuth);
-                    var house = dataRadix.horoscope._celestialBodies[bodies[i]].House.id;
-                    var sign = signs.indexOf(dataRadix.horoscope._celestialBodies[bodies[i]].Sign.key);
-                    console.log(body.key, alt, az, house, sign);                    
+                    var house = 13;
+                    if (dataRadix.horoscope._celestialBodies[bodies[i]].House)
+                        house = signs.indexOf(dataRadix.horoscope._celestialBodies[bodies[i]].House.key);
+
+                    var sign = 13;
+                    if (dataRadix.horoscope._celestialBodies[bodies[i]].Sign)
+                        sign = signs.indexOf(dataRadix.horoscope._celestialBodies[bodies[i]].Sign.key);
+
+                    console.log(body.key, alt, az, house, sign);             
                     
                     // AZM 
                     var az_channel = Math.floor(az / 128) + 1
@@ -96,6 +103,26 @@ function run({ origin, transit, settings }) {
 
                     // SIGN
                     channel.sendControlChange(7, sign);
+
+                    // ASPECTS
+                    if (dataRadix.horoscope._aspects.points[key] != undefined) {
+                        var aspects_list = dataRadix.horoscope._aspects.points[key];
+                        console.log(aspects_list);
+    
+                        if (dataRadix.horoscope._aspects.points[key] == undefined) 
+                            continue;
+    
+                        for (let j = 0; j < aspects_list.length; j++) {
+                            var o = aspects_list[j].point1Key;
+                            if (o == key) 
+                                p = aspects_list[j].point2Key;
+                            var t = aspects_list[j].aspectKey;
+                            if (bodies.includes(p) && aspects.includes(t)) {
+                                console.log("aspect:", key, "with", p, t);
+                                channel.sendControlChange(8 + bodies.indexOf(p), aspects.indexOf(t));
+                            }
+                        }
+                    }
                 }
             }
         }
