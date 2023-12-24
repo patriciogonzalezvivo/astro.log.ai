@@ -51,9 +51,11 @@ function run({ origin, transit, settings }) {
         } else {
             dataRadix = calculate({ ...origin, ...currentTime }, settings); 
             console.log(dataRadix);
-            let output = WebMidi.outputs[0];
-            let channel = output.channels[1];
-            channel.playNote("C3");
+            if (WebMidi.outputs.length > 0) {
+                let output = WebMidi.outputs[0];
+                let channel = output.channels[1];
+                console.log("channel", channel);
+            }
         }
         text.displayTime(dataRadix, dataTransit, settings);
         chart.draw(dataRadix, dataTransit, settings);
