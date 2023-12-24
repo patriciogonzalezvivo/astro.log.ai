@@ -23,7 +23,7 @@ npm run start
 | 9         | `neptune`     |
 | 10        | `pluto`       |
 
-For each channel:
+For each channel (body):
 
 | CC        |  Type         | 
 |-----------|:-------------:|
@@ -38,4 +38,3 @@ For each channel:
 Where:
 - The **azimuth** 
 - The **altitud** can be negative (from -90 to 0) or positive (from 0 to 90)
-
