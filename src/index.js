@@ -23,6 +23,7 @@ WebMidi
 
 let bodies = ["sun", "moon", "mercury", "venus", "mars", "jupiter", "saturn", "uranus", "neptune", "pluto"];
 let signs = ["aries", "taurus", "gemini", "cancer", "leo", "virgo", "libra", "scorpio", "sagittarius", "capricorn", "aquarius", "pisces"];
+let aspects = ["conjunction","opposition", "trine", "square", "sextile"];
 
 function run({ origin, transit, settings }) {
     console.info("[Configuration] %o", { origin, transit, settings });
